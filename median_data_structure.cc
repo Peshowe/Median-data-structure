@@ -113,16 +113,11 @@ double MedianStruct<T>::getMedian () const {
 
 int main() {
    try {
-      MedianStruct<int> intStruct;
 
-      // manipulate int stack
-      intStruct.add(5);
-      intStruct.add(10);
-      intStruct.add(20);
-      intStruct.add(3);
-      intStruct.add(14);
-      intStruct.add(13);
-      intStruct.add(12);
+      int A[] = {5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4};
+      MedianStruct<int> intStruct;
+      for(int a: A) intStruct.add(a);
+
       cout << intStruct.getMedian() <<endl;
 
    } catch (exception const& ex) {
