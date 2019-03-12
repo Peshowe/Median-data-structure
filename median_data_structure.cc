@@ -1,13 +1,25 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
-#include <string>
 #include <stdexcept>
 #include <type_traits>
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 
+
+/**
+* Median data structure implemented as a binary tree, the root always being the current median,
+* the left subtree - a max heap and the right subtree - a min heap.
+* When adding an element, it is pushed to either the min or max heap, depending on whether it is larger than the current median or not.
+* This means that there is an inherent overhead of O(log n), as the new value has to be "sifted", to preserve the heap.
+* This overhead though is less than what would be computationaly needed to for example keep a balanced binary search tree (as we don't need to pay for that)
+*   and it is also more efficient than doing an O(n) insertion sort on each add.
+*
+* This is an online implementation that returns the current median in O(1) time, but takes O(log n) to add.
+*
+* It allows any type, but before using it probably should be checked whether it is an arithmetic type.
+*/
 template <typename T>
 class MedianStruct {
    private:
@@ -19,24 +31,16 @@ class MedianStruct {
      //the current median of the elements (can think of it as the root node of a binary tree, which has the above maxHeap as a right subtree and the minHeap as a left subtree )
      double currentMedian = 0;
 
-     // void swapAndPush(priority_queue<T>*, priority_queue<T>*, T const&);
-
    public:
       void add(T const&);  // add an element to the structure
       double getMedian() const; // get the current median
 
 };
 
-// template <typename T>
-// void swapAndPush(priority_queue<T>* smallerHeap, priority_queue<T>* biggerHeap, T const& newEl){
-//     *smallerHeap.push(*biggerHeap.top()); //push top element of the bigger heap to the smaller heap
-//     *biggerHeap.pop(); // and pop that element to make space for the new element
-//     *smallerHeap.push(newEl); //push new element to the smaller heap
-// }
-
 
 /**
-* Add an element and compute current median (online algorithm)
+* Add an element and compute the new current median
+* The computation of the wanted result during each add makes this an online algorithm
 */
 template <typename T>
 void MedianStruct<T>::add (T const& newEl) {
@@ -45,7 +49,6 @@ void MedianStruct<T>::add (T const& newEl) {
   bool isLarger = newEl > currentMedian;
 
   int diff = maxHeap.size() - minHeap.size(); //compute difference of the sizes of the two heaps
-  // int sgn = (T(0) < diff) - (diff < T(0)); //get the sign of the difference (signum function)
 
   //the sizes of both heaps at any time will differ by at most 1 (so signum function is implicit (in a way))
   switch (diff) {
@@ -57,11 +60,11 @@ void MedianStruct<T>::add (T const& newEl) {
         minHeap.push(maxHeap.top()); //push top element of the maxHeap to the minHeap
         maxHeap.pop(); // and pop that element to make space for the new element
         maxHeap.push(newEl); //push new element to the maxHeap
-        // swapAndPush(&minHeap, &maxHeap, newEl);
       }
 
       //now both heaps are the same size, so calculate median by taking the average of the tops of both heaps
       currentMedian = (double)(maxHeap.top() + minHeap.top())/2;
+      break;
 
     // both heaps are equal size
     case 0:
@@ -72,32 +75,39 @@ void MedianStruct<T>::add (T const& newEl) {
         maxHeap.push(newEl);
         currentMedian = maxHeap.top();
       }
+      break;
 
     // minHeap (right one) has more elements
     case -1:
       if(isLarger){
-        maxHeap.push(minHeap.top()); //make space for new element
+        maxHeap.push(minHeap.top()); //make space for new element by moving the top of the minHeap to the maxHeap
         minHeap.pop();
-        minHeap.push(newEl);
-        // swapAndPush(&maxHeap, &minHeap, newEl);
+        minHeap.push(newEl); //push new element
       }else{
         maxHeap.push(newEl);
       }
 
       //now both heaps are the same size, so calculate median by taking the average of the tops of both heaps
       currentMedian = (double)(maxHeap.top() + minHeap.top())/2;
-
+      break;
   }
+
+  cout<<currentMedian<<endl;
+
 }
 
+
+/**
+* Return the current median of the elements in the data structure
+*/
 template <typename T>
 double MedianStruct<T>::getMedian () const {
 
-  // if(elements.empty()){
-  //   throw out_of_range("MedianStruct<>::calcMedian(): no elements in the data structure");
-  // }
+  //throw an exception if the data structure is empty (median is undefined)
+  if(maxHeap.empty() && minHeap.empty()){
+    throw out_of_range("MedianStruct<>::calcMedian(): no elements in the data structure");
+  }
 
-  // return copy of last element
   return currentMedian;
 }
 
@@ -109,15 +119,12 @@ int main() {
       intStruct.add(5);
       intStruct.add(10);
       intStruct.add(20);
+      intStruct.add(3);
+      intStruct.add(14);
+      intStruct.add(13);
+      intStruct.add(12);
       cout << intStruct.getMedian() <<endl;
 
-
-      // // manipulate string stack
-      // Stack<string> stringStack;    // stack of strings
-      // stringStack.push("hello");
-      // cout << stringStack.top() << std::endl;
-      // stringStack.pop();
-      // stringStack.pop();
    } catch (exception const& ex) {
       cerr << "Exception: " << ex.what() <<endl;
       return -1;
