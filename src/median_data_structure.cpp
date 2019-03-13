@@ -82,7 +82,7 @@ double MedianStruct<T>::getMedian () const {
 
 
 // explicit instantiations with the types this data structure can be used
-//  (the linker wouldn't be able to find the template if called with a different type)
+//  (the linker wouldn't be able to find the template if called with a different type - wouldn't compile at all)
 template class MedianStruct<int>;
 template class MedianStruct<long>;
 template class MedianStruct<float>;
