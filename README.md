@@ -4,8 +4,10 @@
 
 The data structure was implemented as a binary tree, the root always being the current median, the left subtree - a max heap and the right subtree - a min heap.
 
-The code with the solution is located in **include/median_data_structure.h** and **src/median_data_structure.cpp**.  
+The code with the solution (written in C++) is located in **include/median_data_structure.h** and **src/median_data_structure.cpp**.  
 A more in-depth explanation of the implementation and the reasoning behind it is given in the comments of those files.
+
+The below instructions were succesfully executed on Ubuntu 18.04. I am not sure whether they would be the same if ran on a Windows machine. 
 
 ## Build
 
@@ -34,4 +36,3 @@ The test file is built with the rest of the project. To run it, from the **build
  ./tests
 ```
 
-The above instructions were succesfully executed on Ubuntu 18.04.
