@@ -11,7 +11,7 @@ A more in-depth explanation of the implementation and the reasoning behind it is
 
 To build using CMake:
 ```
- cd build
+ mkdir build && cd $_
  cmake ../
  make
 
