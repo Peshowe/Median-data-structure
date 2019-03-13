@@ -19,7 +19,7 @@ To build using CMake:
 
 ## Main
 In **src** I've also included a **main.cpp** file that only has main() and can be used to play around with the data structure.  
-To execute simply build and run:
+To execute simply build and from the **build** directory run:
 ```
  ./main
 ```
@@ -29,7 +29,9 @@ To execute simply build and run:
 I wrote a few unit test cases, using the very lightweight [doctest C++ testing framework](https://github.com/onqtam/doctest).  
 They are located in **tests/tests.cpp**.  
 
-The test file is built with the rest of the project. To run it, simply do:
+The test file is built with the rest of the project. To run it, from the **build** directory do:
 ```
  ./tests
 ```
+
+The above instructions were succesfully executed on Ubuntu 18.04.
