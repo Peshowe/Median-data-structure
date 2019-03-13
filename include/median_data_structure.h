@@ -2,7 +2,7 @@
 #define MEDIAN_DATA_STRUCTURE_H
 
 #include <vector>
-#include <bits/stdc++.h>
+#include <queue> 
 
 
 /**
